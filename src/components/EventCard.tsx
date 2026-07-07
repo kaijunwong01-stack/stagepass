@@ -1,7 +1,6 @@
+import Link from "next/link";
 import { Concert } from "@/data/concerts";
 
-// This component only knows how to render ONE concert.
-// It doesn't know or care where the data comes from.
 type EventCardProps = {
   concert: Concert;
 };
@@ -14,7 +13,10 @@ export default function EventCard({ concert }: EventCardProps) {
   });
 
   return (
-    <div className="rounded-2xl bg-neutral-900 p-5 shadow-md transition-shadow hover:shadow-lg">
+    <Link
+      href={`/events/${concert.id}`}
+      className="block rounded-2xl bg-neutral-900 p-5 shadow-md transition-shadow hover:shadow-lg"
+    >
       <div className="mb-2 flex items-center justify-between">
         <span className="text-xs uppercase tracking-wide text-neutral-400">
           {concert.genre}
@@ -26,6 +28,6 @@ export default function EventCard({ concert }: EventCardProps) {
         {concert.venue}, {concert.city}
       </p>
       <p className="mt-1 text-sm text-neutral-500">{formattedDate}</p>
-    </div>
+    </Link>
   );
 }
