@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Concert } from "@/data/concerts";
+import FavoriteButton from "@/components/FavoriteButton";
 
 type EventCardProps = {
   concert: Concert;
@@ -15,9 +16,14 @@ export default function EventCard({ concert }: EventCardProps) {
   return (
     <Link
       href={`/events/${concert.id}`}
-      className="block rounded-2xl bg-neutral-900 p-5 shadow-md transition-shadow hover:shadow-lg"
+      className="relative block rounded-2xl bg-neutral-900 p-5 shadow-md transition-shadow hover:shadow-lg"
     >
-      <div className="mb-2 flex items-center justify-between">
+      <FavoriteButton
+        concertId={concert.id}
+        className="absolute right-4 top-4"
+      />
+
+      <div className="mb-2 flex items-center justify-between pr-8">
         <span className="text-xs uppercase tracking-wide text-neutral-400">
           {concert.genre}
         </span>

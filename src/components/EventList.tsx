@@ -3,6 +3,7 @@
 import { useState } from "react";
 import EventCard from "@/components/EventCard";
 import { Concert } from "@/data/concerts";
+import { useFavorites } from "@/hooks/useFavorites";
 
 type EventListProps = {
   concerts: Concert[];
@@ -11,9 +12,10 @@ type EventListProps = {
 export default function EventList({ concerts }: EventListProps) {
   const [searchText, setSearchText] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("All");
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
-  // Build the genre dropdown options from the actual data,
-  // so we never have to manually update this list when new genres appear.
+  const { toggleFavorite, isFavorite } = useFavorites();
+
   const genres = ["All", ...new Set(concerts.map((c) => c.genre))];
 
   const filteredConcerts = concerts.filter((concert) => {
@@ -24,12 +26,14 @@ export default function EventList({ concerts }: EventListProps) {
     const matchesGenre =
       selectedGenre === "All" || concert.genre === selectedGenre;
 
-    return matchesSearch && matchesGenre;
+    const matchesFavorite = !showFavoritesOnly || isFavorite(concert.id);
+
+    return matchesSearch && matchesGenre && matchesFavorite;
   });
 
   return (
     <div>
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
         <input
           type="text"
           placeholder="Search by title or venue..."
@@ -49,6 +53,15 @@ export default function EventList({ concerts }: EventListProps) {
             </option>
           ))}
         </select>
+
+        <label className="flex items-center gap-2 text-sm text-neutral-300">
+          <input
+            type="checkbox"
+            checked={showFavoritesOnly}
+            onChange={(e) => setShowFavoritesOnly(e.target.checked)}
+          />
+          Favorites only
+        </label>
       </div>
 
       {filteredConcerts.length === 0 ? (
