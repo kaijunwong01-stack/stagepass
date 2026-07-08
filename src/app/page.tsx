@@ -1,4 +1,4 @@
-import EventCard from "@/components/EventCard";
+import EventList from "@/components/EventList";
 import { concerts } from "@/data/concerts";
 
 export default function HomePage() {
@@ -11,11 +11,7 @@ export default function HomePage() {
         </p>
       </header>
 
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {concerts.map((concert) => (
-          <EventCard key={concert.id} concert={concert} />
-        ))}
-      </section>
+      <EventList concerts={concerts} />
     </main>
   );
 }
