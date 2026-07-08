@@ -1,4 +1,4 @@
-import { concerts } from "@/data/concerts";
+import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import FavoriteButton from "@/components/FavoriteButton";
 
@@ -8,9 +8,14 @@ type EventPageProps = {
 
 export default async function EventPage({ params }: EventPageProps) {
   const { id } = await params;
-  const concert = concerts.find((c) => c.id === id);
 
-  if (!concert) {
+  const { data: concert, error } = await supabase
+    .from("concerts")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error || !concert) {
     notFound();
   }
 

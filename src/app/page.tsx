@@ -1,7 +1,20 @@
 import EventList from "@/components/EventList";
-import { concerts } from "@/data/concerts";
+import { supabase } from "@/lib/supabase";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { data: concerts, error } = await supabase
+    .from("concerts")
+    .select("*")
+    .order("date", { ascending: true });
+
+  if (error) {
+    return (
+      <main className="min-h-screen bg-black px-4 py-8 text-white sm:px-8">
+        Something went wrong loading concerts. Please try again later.
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-black px-4 py-8 sm:px-8">
       <header className="mb-8">
