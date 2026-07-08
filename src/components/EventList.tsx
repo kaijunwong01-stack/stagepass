@@ -14,7 +14,7 @@ export default function EventList({ concerts }: EventListProps) {
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
-  const { toggleFavorite, isFavorite } = useFavorites();
+  const { isFavorite } = useFavorites();
 
   const genres = ["All", ...new Set(concerts.map((c) => c.genre))];
 
@@ -39,13 +39,13 @@ export default function EventList({ concerts }: EventListProps) {
           placeholder="Search by title or venue..."
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
-          className="w-full rounded-lg bg-neutral-900 px-4 py-2 text-white placeholder-neutral-500 outline-none ring-1 ring-neutral-800 focus:ring-neutral-600 sm:max-w-xs"
+          className="w-full rounded-lg bg-neutral-100 px-4 py-2 text-neutral-900 placeholder-neutral-500 outline-none ring-1 ring-neutral-300 focus:ring-neutral-500 dark:bg-neutral-900 dark:text-white dark:placeholder-neutral-500 dark:ring-neutral-800 dark:focus:ring-neutral-600 sm:max-w-xs"
         />
 
         <select
           value={selectedGenre}
           onChange={(e) => setSelectedGenre(e.target.value)}
-          className="rounded-lg bg-neutral-900 px-4 py-2 text-white outline-none ring-1 ring-neutral-800 focus:ring-neutral-600"
+          className="rounded-lg bg-neutral-100 px-4 py-2 text-neutral-900 outline-none ring-1 ring-neutral-300 focus:ring-neutral-500 dark:bg-neutral-900 dark:text-white dark:ring-neutral-800 dark:focus:ring-neutral-600"
         >
           {genres.map((genre) => (
             <option key={genre} value={genre}>
@@ -54,7 +54,7 @@ export default function EventList({ concerts }: EventListProps) {
           ))}
         </select>
 
-        <label className="flex items-center gap-2 text-sm text-neutral-300">
+        <label className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300">
           <input
             type="checkbox"
             checked={showFavoritesOnly}
