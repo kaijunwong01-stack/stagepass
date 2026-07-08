@@ -27,17 +27,19 @@ export default async function EventPage({ params }: EventPageProps) {
   });
 
   return (
-    <main className="mx-auto min-h-screen max-w-2xl px-4 py-10 sm:px-8">
+    <main className="mx-auto min-h-screen max-w-2xl bg-white px-4 py-10 dark:bg-black sm:px-8">
       <div className="flex items-start justify-between">
-        <span className="text-xs uppercase tracking-wide text-neutral-400">
+        <span className="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
           {concert.genre}
         </span>
         <FavoriteButton concertId={concert.id} />
       </div>
 
-      <h1 className="mt-2 text-3xl font-bold text-white">{concert.title}</h1>
+      <h1 className="mt-2 text-3xl font-bold text-neutral-900 dark:text-white">
+        {concert.title}
+      </h1>
 
-      <div className="mt-6 space-y-2 text-neutral-300">
+      <div className="mt-6 space-y-2 text-neutral-700 dark:text-neutral-300">
         <p>
           <span className="text-neutral-500">Venue: </span>
           {concert.venue}, {concert.city}

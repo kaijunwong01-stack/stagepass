@@ -24,7 +24,9 @@ export default function FavoriteButton({
     <button
       onClick={handleClick}
       aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
-      className={`text-xl ${className}`}
+      className={`text-xl ${
+        favorited ? "text-red-500" : "text-neutral-400 dark:text-white"
+      } ${className}`}
     >
       {favorited ? "★" : "☆"}
     </button>
