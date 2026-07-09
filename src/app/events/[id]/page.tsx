@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import FavoriteButton from "@/components/FavoriteButton";
+import VenueMap from "@/components/VenueMap";
 
 type EventPageProps = {
   params: Promise<{ id: string }>;
@@ -52,6 +53,10 @@ export default async function EventPage({ params }: EventPageProps) {
           <span className="text-neutral-500">Price: </span>
           {concert.price}
         </p>
+      </div>
+
+      <div className="mt-6">
+        <VenueMap venue={concert.venue} city={concert.city} />
       </div>
     </main>
   );
