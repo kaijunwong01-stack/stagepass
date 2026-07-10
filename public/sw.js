@@ -1,4 +1,4 @@
-const CACHE_NAME = "stagepass-shell-v1";
+const CACHE_NAME = "stagepass-shell-v2";
 
 const APP_SHELL_URLS = [
   "/",
@@ -7,16 +7,13 @@ const APP_SHELL_URLS = [
   "/icon-512.png",
 ];
 
-// Runs once, when the service worker is first installed.
-// We pre-cache the app shell files here.
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL_URLS))
   );
+  self.skipWaiting();
 });
 
-// Runs when a new version of the service worker takes over.
-// We clean up old caches from previous versions here.
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) =>
@@ -27,13 +24,12 @@ self.addEventListener("activate", (event) => {
       )
     )
   );
+  self.clients.claim();
 });
 
-// Runs every time the browser makes a network request while on our site.
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     fetch(event.request).catch(() => {
-      // If the network request fails (offline), try the cache instead.
       return caches.match(event.request).then((cached) => {
         return cached || caches.match("/offline");
       });
