@@ -11,6 +11,22 @@ HEADERS = {
     "User-Agent": "StagePassBot/0.1 (educational project; contact: your-email@example.com)"
 }
 
+# Keywords that indicate a non-concert event (talk shows, salons, screenings, etc.)
+# rather than an actual live music performance.
+NON_CONCERT_KEYWORDS = [
+    "トーク",
+    "レポートイベント",
+    "サロン",
+    "salon",
+    "上映会",
+    "トークショー",
+]
+
+
+def is_likely_concert(title: str) -> bool:
+    lowered = title.lower()
+    return not any(keyword.lower() in lowered for keyword in NON_CONCERT_KEYWORDS)
+
 
 def fetch_page(slug: str) -> str:
     url = BASE_URL.format(slug=slug)
@@ -38,13 +54,18 @@ def parse_events(html: str, venue_name: str, city: str) -> list[dict]:
         if not title_el or not year_el:
             continue
 
+        title_text = title_el.get_text(strip=True)
+
+        if not is_likely_concert(title_text):
+            continue
+
         date_str = f"{year_el.get_text(strip=True)}-{month_el.get_text(strip=True)}-{day_el.get_text(strip=True)}"
         artists = [a.get_text(strip=True) for a in artist_els]
         image_url = image_el.get("data-bg") if image_el else None
 
         events.append(
             {
-                "title": title_el.get_text(strip=True),
+                "title": title_text,
                 "date": date_str,
                 "open_start": open_el.get_text(strip=True) if open_el else None,
                 "artists": artists,
@@ -56,6 +77,8 @@ def parse_events(html: str, venue_name: str, city: str) -> list[dict]:
         )
 
     return events
+
+
 def main():
     all_events = []
 
