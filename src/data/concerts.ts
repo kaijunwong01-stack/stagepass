@@ -7,4 +7,5 @@ export type Concert = {
   date: string;
   genre: string;
   price: string;
+  image_url: string | null;
 };

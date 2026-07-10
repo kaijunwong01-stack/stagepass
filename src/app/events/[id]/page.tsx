@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import FavoriteButton from "@/components/FavoriteButton";
 import VenueMap from "@/components/VenueMap";
+import Image from "next/image";
 
 type EventPageProps = {
   params: Promise<{ id: string }>;
@@ -29,6 +30,18 @@ export default async function EventPage({ params }: EventPageProps) {
 
   return (
     <main className="mx-auto min-h-screen max-w-2xl bg-white px-4 py-10 dark:bg-black sm:px-8">
+      {concert.image_url && (
+        <div className="relative mb-6 h-64 w-full overflow-hidden rounded-xl">
+          <Image
+            src={concert.image_url}
+            alt={concert.title_en}
+            fill
+            className="object-cover"
+            unoptimized
+          />
+        </div>
+      )}
+
       <div className="flex items-start justify-between">
         <span className="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
           {concert.genre}
