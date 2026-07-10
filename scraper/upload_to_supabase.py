@@ -2,8 +2,8 @@ import json
 import os
 import re
 import requests
-import deepl
 from dotenv import load_dotenv
+from classify_genre import classify_genre
 
 load_dotenv()
 
@@ -17,6 +17,8 @@ HEADERS = {
     "Content-Type": "application/json",
     "Prefer": "resolution=merge-duplicates",  # this makes it an upsert
 }
+
+import deepl
 
 translator = deepl.Translator(DEEPL_API_KEY)
 
@@ -39,6 +41,7 @@ def translate_title(title: str) -> str:
 
 def transform(event: dict) -> dict:
     title_en = translate_title(event["title"])
+    genre = classify_genre(event["title"], event.get("artists", []))
 
     return {
         "id": extract_id(event["source_url"]),
@@ -47,7 +50,7 @@ def transform(event: dict) -> dict:
         "venue": event["venue"],
         "city": event["city"],
         "date": event["date"],
-        "genre": "Live",
+        "genre": genre,
         "price": "See venue for details",
         "image_url": event.get("image_url"),
     }
@@ -57,7 +60,7 @@ def main():
     with open("output/concerts.json", "r", encoding="utf-8") as f:
         raw_events = json.load(f)
 
-    print(f"Translating and preparing {len(raw_events)} events...")
+    print(f"Translating, classifying genre, and preparing {len(raw_events)} events...")
     rows = [transform(event) for event in raw_events]
 
     response = requests.post(
