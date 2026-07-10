@@ -2,12 +2,14 @@ import json
 import os
 import re
 import requests
+import deepl
 from dotenv import load_dotenv
 
 load_dotenv()
 
 SUPABASE_URL = os.environ["SUPABASE_URL"]
 SUPABASE_SERVICE_KEY = os.environ["SUPABASE_SERVICE_KEY"]
+DEEPL_API_KEY = os.environ["DEEPL_API_KEY"]
 
 HEADERS = {
     "apikey": SUPABASE_SERVICE_KEY,
@@ -16,17 +18,32 @@ HEADERS = {
     "Prefer": "resolution=merge-duplicates",  # this makes it an upsert
 }
 
+translator = deepl.Translator(DEEPL_API_KEY)
+
 
 def extract_id(source_url: str) -> str:
-    # Pull the numeric ID at the end of the URL, e.g. ".../shelter/356131" -> "356131"
     match = re.search(r"/(\d+)$", source_url)
     return match.group(1) if match else source_url
 
 
+def translate_title(title: str) -> str:
+    try:
+        result = translator.translate_text(
+            title, source_lang="JA", target_lang="EN-US"
+        )
+        return result.text
+    except Exception as error:
+        print(f"  Translation failed for '{title}': {error}")
+        return title  # fall back to the original if translation fails
+
+
 def transform(event: dict) -> dict:
+    title_en = translate_title(event["title"])
+
     return {
         "id": extract_id(event["source_url"]),
         "title": event["title"],
+        "title_en": title_en,
         "venue": event["venue"],
         "city": event["city"],
         "date": event["date"],
@@ -39,6 +56,7 @@ def main():
     with open("output/concerts.json", "r", encoding="utf-8") as f:
         raw_events = json.load(f)
 
+    print(f"Translating and preparing {len(raw_events)} events...")
     rows = [transform(event) for event in raw_events]
 
     response = requests.post(

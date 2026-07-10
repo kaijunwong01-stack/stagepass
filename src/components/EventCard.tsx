@@ -31,9 +31,12 @@ export default function EventCard({ concert }: EventCardProps) {
           {concert.price}
         </span>
       </div>
-      <h3 className="mb-1 text-lg font-semibold text-neutral-900 dark:text-white">
-        {concert.title}
+      <h3 className="mb-0.5 text-lg font-semibold text-neutral-900 dark:text-white">
+        {concert.title_en}
       </h3>
+      <p className="mb-1 text-xs text-neutral-500 dark:text-neutral-500">
+        {concert.title}
+      </p>
       <p className="text-sm text-neutral-700 dark:text-neutral-300">
         {concert.venue}, {concert.city}
       </p>

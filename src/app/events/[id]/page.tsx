@@ -37,8 +37,9 @@ export default async function EventPage({ params }: EventPageProps) {
       </div>
 
       <h1 className="mt-2 text-3xl font-bold text-neutral-900 dark:text-white">
-        {concert.title}
+        {concert.title_en}
       </h1>
+      <p className="mt-1 text-sm text-neutral-500">{concert.title}</p>
 
       <div className="mt-6 space-y-2 text-neutral-700 dark:text-neutral-300">
         <p>
