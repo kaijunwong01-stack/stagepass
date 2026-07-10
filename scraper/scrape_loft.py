@@ -33,12 +33,14 @@ def parse_events(html: str, venue_name: str, city: str) -> list[dict]:
         title_el = block.select_one(".c_title span")
         open_el = block.select_one(".open")
         artist_els = block.select(".artist_tag li")
+        image_el = block.select_one(".img_wrap .bg")
 
         if not title_el or not year_el:
             continue
 
         date_str = f"{year_el.get_text(strip=True)}-{month_el.get_text(strip=True)}-{day_el.get_text(strip=True)}"
         artists = [a.get_text(strip=True) for a in artist_els]
+        image_url = image_el.get("data-bg") if image_el else None
 
         events.append(
             {
@@ -49,6 +51,7 @@ def parse_events(html: str, venue_name: str, city: str) -> list[dict]:
                 "venue": venue_name,
                 "city": city,
                 "source_url": block.get("href"),
+                "image_url": image_url,
             }
         )
 

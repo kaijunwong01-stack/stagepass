@@ -49,6 +49,7 @@ def transform(event: dict) -> dict:
         "date": event["date"],
         "genre": "Live",
         "price": "See venue for details",
+        "image_url": event.get("image_url"),
     }
 
 
