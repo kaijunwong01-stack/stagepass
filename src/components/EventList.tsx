@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import EventCard from "@/components/EventCard";
 import { Concert } from "@/data/concerts";
-import { useFavorites } from "@/hooks/useFavorites";
+import { useFavorites } from "@/context/FavoritesContext";
 
 type EventListProps = {
   concerts: Concert[];

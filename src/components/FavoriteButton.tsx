@@ -1,6 +1,6 @@
 "use client";
 
-import { useFavorites } from "@/hooks/useFavorites";
+import { useFavorites } from "@/context/FavoritesContext";
 
 type FavoriteButtonProps = {
   concertId: string;
