@@ -62,16 +62,24 @@ export default async function EventPage({ params }: EventPageProps) {
           {concert.price}
         </p>
         {concert.ticket_url && (
-          <a
-            href={concert.ticket_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-sm font-medium text-blue-600 underline hover:text-blue-500 dark:text-blue-400"
-          >
+          <a href={concert.ticket_url} target="_blank" rel="noopener noreferrer" className="inline-block text-sm font-medium text-blue-600 underline hover:text-blue-500 dark:text-blue-400">
             Buy Tickets →
           </a>
         )}
       </div>
+
+      {concert.artists && concert.artists.length > 0 && (
+        <div className="mt-6 rounded-xl bg-neutral-100 p-4 dark:bg-neutral-900">
+          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+            Lineup
+          </h2>
+          <ul className="space-y-1 text-neutral-700 dark:text-neutral-300">
+            {concert.artists.map((artist: string) => (
+              <li key={artist}>{artist}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="mt-6">
         <VenueMap venue={concert.venue} city={concert.city} />

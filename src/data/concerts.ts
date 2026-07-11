@@ -9,4 +9,5 @@ export type Concert = {
   price: string;
   image_url: string | null;
   ticket_url: string | null;
+  artists: string[];
 };

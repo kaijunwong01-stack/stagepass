@@ -54,8 +54,8 @@ def transform(event: dict) -> dict:
         "price": event.get("price") or "See venue for details",
         "image_url": event.get("image_url"),
         "ticket_url": event.get("ticket_url"),
+        "artists": event.get("artists", []),
     }
-
 def main():
     with open("output/concerts.json", "r", encoding="utf-8") as f:
         raw_events = json.load(f)
