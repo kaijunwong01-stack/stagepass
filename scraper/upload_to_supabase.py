@@ -51,8 +51,9 @@ def transform(event: dict) -> dict:
         "city": event["city"],
         "date": event["date"],
         "genre": genre,
-        "price": "See venue for details",
+        "price": event.get("price") or "See venue for details",
         "image_url": event.get("image_url"),
+        "ticket_url": event.get("ticket_url"),
     }
 
 
