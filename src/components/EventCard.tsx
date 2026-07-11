@@ -61,16 +61,17 @@ export default function EventCard({ concert }: EventCardProps) {
         <p className="mt-1 text-sm text-neutral-500">{formattedDate}</p>
 
         {concert.ticket_url && (
-          <a
-            href={concert.ticket_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="mt-2 inline-block text-xs font-medium text-blue-600 underline hover:text-blue-500 dark:text-blue-400"
-          >
-            Buy Tickets
-          </a>
-        )}
+  <button
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      window.open(concert.ticket_url!, "_blank", "noopener,noreferrer");
+    }}
+    className="mt-2 inline-block text-xs font-medium text-blue-600 underline hover:text-blue-500 dark:text-blue-400"
+  >
+    Buy Tickets
+  </button>
+)}
       </div>
     </Link>
   );

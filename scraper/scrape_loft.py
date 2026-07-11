@@ -3,6 +3,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 from venues import VENUES
+from extract_price import extract_price
 
 BASE_URL = "https://www.loft-prj.co.jp/schedule/{slug}/schedule"
 
@@ -33,6 +34,7 @@ def fetch_page(slug: str) -> str:
     response = requests.get(url, headers=HEADERS, timeout=10)
     response.raise_for_status()  # raises an error if the request failed
     return response.text
+
 
 def fetch_page_raw(url: str) -> str:
     response = requests.get(url, headers=HEADERS, timeout=10)
@@ -83,22 +85,19 @@ def parse_events(html: str, venue_name: str, city: str) -> list[dict]:
 
     return events
 
+
 def parse_event_detail(html: str) -> dict:
     soup = BeautifulSoup(html, "html.parser")
 
     ticket_box = soup.select_one(".ticket_detail_box")
-    if not ticket_box:
-        return {"price": None, "ticket_url": None}
+    raw_price_text = ticket_box.get_text(separator=" ", strip=True) if ticket_box else ""
 
-    # The price is the first plain text directly inside the box,
-    # before any nested tags like <br> or <a>.
-    price_text = ticket_box.find(string=True, recursive=False)
-    price = price_text.strip() if price_text else None
-
-    link_el = ticket_box.select_one("a")
+    link_el = ticket_box.select_one("a") if ticket_box else None
     ticket_url = link_el.get("href") if link_el else None
 
-    return {"price": price, "ticket_url": ticket_url}
+    return {"raw_price_text": raw_price_text, "ticket_url": ticket_url}
+
+
 def main():
     all_events = []
 
@@ -111,7 +110,7 @@ def main():
         for event in events:
             detail_html = fetch_page_raw(event["source_url"])
             details = parse_event_detail(detail_html)
-            event["price"] = details["price"]
+            event["price"] = extract_price(details["raw_price_text"])
             event["ticket_url"] = details["ticket_url"]
             time.sleep(0.5)  # be polite between individual event page requests
 
@@ -122,5 +121,7 @@ def main():
         json.dump(all_events, f, ensure_ascii=False, indent=2)
 
     print(f"\nSaved {len(all_events)} total events to output/concerts.json")
+
+
 if __name__ == "__main__":
     main()
