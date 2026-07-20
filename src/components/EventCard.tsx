@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Concert } from "@/data/concerts";
 import FavoriteButton from "@/components/FavoriteButton";
+import TicketButton from "@/components/TicketButton";
 
 type EventCardProps = {
   concert: Concert;
@@ -61,17 +62,8 @@ export default function EventCard({ concert }: EventCardProps) {
         <p className="mt-1 text-sm text-neutral-500">{formattedDate}</p>
 
         {concert.ticket_url && (
-  <button
-    onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      window.open(concert.ticket_url!, "_blank", "noopener,noreferrer");
-    }}
-    className="mt-2 inline-block text-xs font-medium text-blue-600 underline hover:text-blue-500 dark:text-blue-400"
-  >
-    Buy Tickets
-  </button>
-)}
+          <TicketButton url={concert.ticket_url} className="mt-3" />
+        )}
       </div>
     </Link>
   );

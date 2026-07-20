@@ -23,7 +23,7 @@ export default function VenueMap({ venue, city }: VenueMapProps) {
         href={externalUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-2 inline-block text-sm text-neutral-500 underline hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+        className="mt-3 inline-block rounded-full bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-900 transition-colors hover:bg-neutral-200 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
       >
         Open in Google Maps
       </a>

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import FavoriteButton from "@/components/FavoriteButton";
 import VenueMap from "@/components/VenueMap";
 import ImageLightbox from "@/components/ImageLightbox";
+import TicketButton from "@/components/TicketButton";
 
 type EventPageProps = {
   params: Promise<{ id: string }>;
@@ -61,12 +62,11 @@ export default async function EventPage({ params }: EventPageProps) {
           <span className="text-neutral-500">Price: </span>
           {concert.price}
         </p>
-        {concert.ticket_url && (
-          <a href={concert.ticket_url} target="_blank" rel="noopener noreferrer" className="inline-block text-sm font-medium text-blue-600 underline hover:text-blue-500 dark:text-blue-400">
-            Buy Tickets →
-          </a>
-        )}
       </div>
+
+      {concert.ticket_url && (
+        <TicketButton url={concert.ticket_url} className="mt-4" />
+      )}
 
       {concert.artists && concert.artists.length > 0 && (
         <div className="mt-6 rounded-xl bg-neutral-100 p-4 dark:bg-neutral-900">
