@@ -15,6 +15,9 @@ export default function Navbar() {
           <Link href="/venues" className="hover:text-neutral-900 dark:hover:text-white">
             Venues
           </Link>
+          <Link href="/etiquette" className="hover:text-neutral-900 dark:hover:text-white">
+            Etiquette
+          </Link>
           <Link href="/about" className="hover:text-neutral-900 dark:hover:text-white">
             About
           </Link>
